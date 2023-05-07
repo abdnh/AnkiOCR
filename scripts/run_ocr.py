@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     collection = Collection(str(cpath), log=True)  # Collection is locked from here on
 
-    ocr = OCR(col=collection, text_output_location="new_field")
+    ocr = OCR(col=collection, text_output_location="ocr_field")
     all_note_ids = ocr.col.db.list("select * from notes")
     ocr.run_ocr_on_query(note_ids=all_note_ids)
     # collection.close(save=True)

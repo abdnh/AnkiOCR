@@ -117,10 +117,10 @@ class TestOCR:
         ocr.run_ocr_on_notes(note_ids=note_ids)
         ocr.remove_ocr_on_notes(note_ids=note_ids)
 
-    def test_add_ocr_field_then_remove_text_new_field(self, tmpdir):
+    def test_add_ocr_field_then_remove_text_ocr_field(self, tmpdir):
         col_dir = tmpdir.mkdir("collection")
         test_col = gen_test_collection(col_dir)
-        ocr = OCR(col=test_col, text_output_location="new_field")
+        ocr = OCR(col=test_col, text_output_location="ocr_field")
         note_ids = [1601851571572, 1601851621708]
         ocr.run_ocr_on_notes(note_ids=note_ids)
         ocr.remove_ocr_on_notes(note_ids=note_ids)

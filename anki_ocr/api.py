@@ -115,29 +115,6 @@ class OCRNote:
     def has_OCR_field(self) -> bool:
         return self.note.model()["name"].endswith("_OCR")
 
-    def convert_note_to_OCR(self) -> None:
-        # TODO Change this to process multiple note IDs at once?
-        orig_model = self.note.model()
-        if self.has_OCR_field:
-            logger.info("Note is already an OCR-type, no need to convert")
-            return
-
-        ocr_model_name = orig_model["name"] + "_OCR"
-        if ocr_model_name in self.col.models.allNames():
-            logger.debug(f"Model already exists, using '{ocr_model_name}'")
-            ocr_model = self.col.models.byName(ocr_model_name)
-        else:
-            logger.info(f"Creating new model named '{ocr_model_name}'")
-            ocr_model = self.create_OCR_notemodel(orig_model)
-            self.add_model_to_db(ocr_model=ocr_model)
-
-        field_mapping = {i: i for i in range(len(orig_model["flds"]))}
-        card_mapping = {i: i for i in range(len(self.note.cards()))}
-        self.col.models.change(orig_model, nids=[self.note_id], newModel=ocr_model, fmap=field_mapping,
-                               cmap=card_mapping)
-        self.col.models.save(m=ocr_model)
-        self.col.models.flush()
-
     def remove_OCR_text(self):
         note = self.note
         if self.has_OCR_field:
@@ -204,17 +181,14 @@ class OCRNote:
                 field_img.insert_ocr_text()
                 note[field_img.field_name] = field_img.field_text
 
-        elif method == "new_field":
-            if self.has_OCR_field is False:
-                self.convert_note_to_OCR()
-                note = self.note
+        elif method == "ocr_field":
             note["OCR"] = ""
             for field_img in self.field_images:
                 for ocr_img in field_img.images:
                     if ocr_img.text != "":
                         note["OCR"] += f"Image: {ocr_img.name}\n{'-' * 20}\n{ocr_img.text}".replace('\n', '<br/>')
         else:
-            raise ValueError(f"method {method} not valid. Only 'new_field' and 'tooltip' (default) are allowed.")
+            raise ValueError(f"method {method} not valid. Only 'ocr_field' and 'tooltip' (default) are allowed.")
         note.flush()
         self.col.save()
 

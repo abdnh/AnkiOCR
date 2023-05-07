@@ -58,7 +58,7 @@ class OCR:
         self.set_tesseract_exe_permission()
         tesseract_cmd = tesseract_exec_pth or self.path_to_tesseract()
         pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
-        assert text_output_location in ["tooltip", "new_field"]
+        assert text_output_location in ["tooltip", "ocr_field"]
         self.text_output_location = text_output_location
         self.use_batching = use_batching
         self.use_multithreading = use_multithreading

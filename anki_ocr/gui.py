@@ -29,7 +29,7 @@ def on_run_ocr(browser: Browser):
     elif askUser(f"Are you sure you wish to run OCR processing on {num_notes} notes?") is False:
         return
 
-    if config.get("tesseract_install_valid") is not True and config.get("text_output_location") == "new_field":
+    if config.get("tesseract_install_valid") is not True and config.get("text_output_location") == "ocr_field":
         showInfo(
             f"Note that because this addon changes the note template, you will see a warning about changing the "
             f"database and uploading to AnkiWeb. \n "
