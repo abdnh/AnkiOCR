@@ -3,10 +3,9 @@ import traceback
 from math import ceil
 from typing import List
 
-from PyQt5.QtWidgets import QMenu
 from aqt import mw
 from aqt.browser import Browser
-from aqt.qt import QAction
+from aqt.qt import QAction, QMenu
 from aqt.utils import showInfo, askUser, showCritical
 
 from ._vendor import pytesseract
